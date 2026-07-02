@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<!--
+This is a simple HTML file for the FlexiSAF Intern Office Resource Manager application. 
+It includes:
+1. a sidebar for navigation, 
+2. a header with a search bar and date/time display, 
+3. a dashboard with summary cards and recent activity, 
+4. an intern management section with a form and table,
+5. a weekly schedule section with auto-assign and clear week functionality,
+6. a reports section with export and print options,
+7. an activity log section with search and filter capabilities,
+8. a settings section for managing departments and data backups,
+9. a modal for editing intern details, and a confirmation modal for critical actions.
+
+-->
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FlexiSAF Intern Office Resource Manager</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/app.js" defer></script>
+</head>
+
+<body>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar__brand">
+        <h2>FlexiSAF</h2>
+        <p>Intern Office Manager</p>
+    </div>
+
+    <nav class="sidebar__nav">
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="interns">Intern Management</button>
+        <button class="nav-item" data-view="schedule">Weekly Schedule</button>
+        <button class="nav-item" data-view="reports">Reports</button>
+        <button class="nav-item" data-view="activity">Activity Log</button>
+        <button class="nav-item" data-view="settings">Settings</button>
+    </nav>
+
+    <div class="sidebar__footer">
+        <p>Role: <span id="currentRole">Admin</span></p>
+    </div>
+
+</aside>
+
+<!-- ===================== MAIN AREA ===================== -->
+
+
+<div class="main">
+
+    <!-- ================= HEADER ================= -->
+    <header class="header">
+
+        <div class="header__left">
+            <button id="toggleSidebar">☰</button>
+            <h1>FIORM Dashboard</h1>
+        </div>
+
+        <div class="header__right">
+            <input type="text" id="globalSearch" placeholder="Search interns..." />
+            <div class="datetime">
+                <span id="currentDate"></span>
+                <span id="currentTime"></span>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- ================= DASHBOARD VIEW ================= -->
+    <section class="view active" id="dashboard-view">
+
+        <h2>Dashboard</h2>
+
+        <div class="cards">
+
+            <div class="card">Total Interns <span id="totalInterns">0</span></div>
+            <div class="card">Assigned Today <span id="assignedToday">0</span></div>
+            <div class="card">Available Desks <span id="availableDesks">0</span></div>
+            <div class="card">Remote Interns <span id="remoteInterns">0</span></div>
+            <div class="card">Occupancy Rate <span id="occupancyRate">0%</span></div>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="panel">
+                <h3>Weekly Overview</h3>
+                <div id="weeklyOverview"></div>
+            </div>
+
+            <div class="panel">
+                <h3>Recent Activity</h3>
+                <div id="recentActivity"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= INTERN MANAGEMENT VIEW ================= -->
+    <section class="view" id="interns-view">
+
+        <h2>Intern Management</h2>
+
+        <div class="panel">
+
+            <form id="internForm">
+
+                <input type="text" id="firstName" placeholder="First Name" required>
+                <input type="text" id="lastName" placeholder="Last Name" required>
+
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="text" id="phone" placeholder="Phone Number" required>
+
+                <input type="text" id="university" placeholder="University" required>
+
+                <input type="text" id="course" placeholder="Course of Study" required>
+
+                <select id="officeDepartment"></select>
+                <select id="nyscBatch">
+                    <option value="NA">Not Applicable</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+
+                <button type="submit">Add Intern</button>
+
+            </form>
+
+        </div>
+
+        <div class="panel">
+
+            <input type="text" id="internSearch" placeholder="Search by name, email, phone">
+
+            <div id="internTable"></div>
+
+        </div>
+
+    </section>
+
+    <!-- ============== WEEKLY SCHEDULE VIEW ===========-->
+    <section class="view" id="schedule-view">
+
+        <h2>Weekly Schedule</h2>
+
+        <div class="panel">
+
+            <div class="schedule-controls">
+
+                <select id="officeSelector">
+                    <option value="InternOffice">InternOffice</option>
+                    <option value="InternOffice2">InternOffice2</option>
+                    <option value="Remote">Remote</option>
+                </select>
+
+                <button id="autoAssignBtn">Auto Assign</button>
+
+                <button id="clearWeekBtn">Clear Week</button>
+
+            </div>
+
+            <div class="week-grid">
+
+                <div class="day-column" data-day="Monday"></div>
+                <div class="day-column" data-day="Tuesday"></div>
+                <div class="day-column" data-day="Wednesday"></div>
+                <div class="day-column" data-day="Thursday"></div>
+                <div class="day-column" data-day="Friday"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+    
+    
+    <!-- ============== REPORTS VIEW ===========-->
+    <section class="view" id="reports-view">
+
+        <h2>Reports</h2>
+
+        <div class="panel">
+
+            <button id="exportCSV">Export CSV</button>
+            <button id="exportJSON">Export JSON</button>
+            <button id="printReport">Print</button>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>Summary Report</h3>
+
+            <div id="reportSummary"></div>
+
+        </div>
+
+    </section>
+    
+    <!-- ============== ACTIVITY LOG VIEW ===========-->
+    <section class="view" id="activity-view">
+
+        <h2>Activity Log</h2>
+
+        <div class="panel">
+
+            <input type="text" id="activitySearch" placeholder="Search activity...">
+
+            <select id="activityFilter">
+                <option value="all">All</option>
+                <option value="intern">Intern Management</option>
+                <option value="schedule">Scheduling</option>
+                <option value="report">Reports</option>
+                <option value="settings">Settings</option>
+            </select>
+
+        </div>
+
+        <div class="panel">
+
+            <div id="activityList"></div>
+
+        </div>
+
+        
+    </section>
+
+    
+    <!-- ============== SETTINGS VIEW ===========-->
+    <section class="view" id="settings-view">
+
+        <h2>Settings</h2>
+
+        <div class="panel">
+
+            <h3>Departments</h3>
+
+            <div id="departmentList"></div>
+
+            <input type="text" id="newDepartment" placeholder="Add new department">
+            <button id="addDepartmentBtn">Add Department</button>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>Data Management</h3>
+
+            <button id="backupBtn">Export Backup</button>
+            <button id="restoreBtn">Restore Backup</button>
+
+            <input type="file" id="restoreFile" hidden>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>Danger Zone</h3>
+
+            <button id="resetSystemBtn">Reset Weekly Schedule</button>
+
+        </div>
+
+    </section>
+
+        <!-- MODAL: EDIT INTERN -->
+    <div class="modal hidden" id="editInternModal">
+
+        <div class="modal-content">
+
+            <h3>Edit Intern</h3>
+
+            <input type="text" id="editFirstName">
+            <input type="text" id="editLastName">
+            <input type="email" id="editEmail">
+            <input type="text" id="editPhone">
+
+            <button id="saveEditBtn">Save Changes</button>
+            <button id="closeEditModal">Cancel</button>
+
+        </div>
+
+    </div>
+
+
+     <!--========MODAL SYSTEM ======-->
+    <div class="modal hidden" id="confirmModal">
+
+        <div class="modal-content">
+
+            <h3>Confirm Action</h3>
+
+            <p id="confirmMessage"></p>
+
+            <button id="confirmYes">Yes</button>
+            <button id="confirmNo">No</button>
+
+        </div>
+
+    </div>
+
+</div> <!-- END MAIN -->
+
+</body>
+</html>
+
+<!--END OF HTML CODE-->
