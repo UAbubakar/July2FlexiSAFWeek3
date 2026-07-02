@@ -1,11 +1,11 @@
-export const ROLES = {
+const ROLES = {
     ADMIN: "Admin",
     SUPERVISOR: "Supervisor",
     INTERN: "Intern",
     VIEWER: "Viewer"
 };
 
-export const OFFICES = {
+const OFFICES = {
     InternOffice: {
         location: "Engineering Building",
         desks: ["D01","D02","D03","D04","D05","D06","D07","D08"]
@@ -22,7 +22,7 @@ export const OFFICES = {
     }
 };
 
-export const DEPARTMENTS = [
+const DEPARTMENTS = [
     "Frontend Development",
     "Backend Development",
     "UI/UX Design",
@@ -32,12 +32,12 @@ export const DEPARTMENTS = [
     "Product Design (Website)"
 ];
 
-export const NYSC = ["NA","A1","A2","B1","B2","C1","C2"];
+const NYSC = ["NA","A1","A2","B1","B2","C1","C2"];
 
 
 const STORAGE_KEY = "FIORM_DATA";
 
-export const Storage = {
+const Storage = {
 
     load() {
         const data = localStorage.getItem(STORAGE_KEY);
